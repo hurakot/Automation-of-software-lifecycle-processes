@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Запись: {{ conference.title }}{% endblock %}
+
+{% block content %}
+<a class="btn btn-link px-0 mb-2"
+   href="{{ url_for('conference_full_page', id_conference=conference.id) }}">
+  ← Назад к конференции
+</a>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h1 class="h4 mb-3">Запись на конференцию</h1>
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h5 mb-2">{{ conference.title }}</h2>
+        <dl class="row small mb-0">
+          <dt class="col-sm-3 text-muted fw-normal">Даты</dt>
+          <dd class="col-sm-9">
+            {{ conference.start_date.strftime('%d.%m.%Y') }} – {{ conference.end_date.strftime('%d.%m.%Y') }}
+          </dd>
+          <dt class="col-sm-3 text-muted fw-normal">Место</dt>
+          <dd class="col-sm-9">{{ conference.location }}</dd>
+          <dt class="col-sm-3 text-muted fw-normal">Оргвзнос</dt>
+          <dd class="col-sm-9 mb-0">{{ conference.fee }} ₽</dd>
+        </dl>
+      </div>
+    </div>
+
+    <form method="post" class="card shadow-sm">
+      <div class="card-body">
+        <fieldset class="mb-4">
+          <legend class="h6 text-muted">Я участвую как</legend>
+          <div class="btn-group w-100" role="group" aria-label="Роль">
+            <input type="radio" class="btn-check" name="role" id="role-participant"
+                   value="participant" checked>
+            <label class="btn btn-outline-primary" for="role-participant">Участник</label>
+
+            <input type="radio" class="btn-check" name="role" id="role-speaker"
+                   value="speaker">
+            <label class="btn btn-outline-primary" for="role-speaker">Докладчик</label>
+          </div>
+        </fieldset>
+
+        <div class="mb-4" id="topic-field" hidden>
+          <label for="report_topic" class="form-label">Тема доклада</label>
+          <input type="text" class="form-control" id="report_topic" name="report_topic">
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">Записаться</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var field = document.getElementById('topic-field');
+    var input = document.getElementById('report_topic');
+    var radios = document.querySelectorAll('input[name="role"]');
+
+    function update() {
+      var isSpeaker = document.querySelector('input[name="role"]:checked').value === 'speaker';
+      field.hidden = !isSpeaker;
+      input.required = isSpeaker;
+    }
+    radios.forEach(function (r) { r.addEventListener('change', update); });
+    update();
+  })();
+</script>
+{% endblock %}

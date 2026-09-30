@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Новая конференция{% endblock %}
+
+{% block content %}
+<a class="btn btn-link px-0 mb-2" href="{{ url_for('main_page') }}">← Назад к списку</a>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-4">Новая конференция</h1>
+
+        <form method="post" novalidate>
+          <div class="mb-3">
+            <label for="title" class="form-label">Название</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="topic" class="form-label">Тема</label>
+            <input type="text" class="form-control" id="topic" name="topic" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">
+              Описание <span class="text-muted small">(необязательно)</span>
+            </label>
+            <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="location" class="form-label">Место проведения</label>
+            <input type="text" class="form-control" id="location" name="location" required>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="start_date" class="form-label">Дата начала</label>
+              <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="col-md-6">
+              <label for="end_date" class="form-label">Дата окончания</label>
+              <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="fee" class="form-label">Оргвзнос, ₽</label>
+            <input type="number" class="form-control" id="fee" name="fee"
+                   min="0" step="1" required>
+          </div>
+
+          <button class="btn btn-primary w-100" type="submit">Создать конференцию</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var start = document.getElementById('start_date');
+    var end = document.getElementById('end_date');
+
+    function sync() {
+      if (start.value) {
+        end.min = start.value;
+        if (end.value && end.value < start.value) end.value = start.value;
+      }
+    }
+    start.addEventListener('change', sync);
+    sync();
+  })();
+</script>
+{% endblock %}

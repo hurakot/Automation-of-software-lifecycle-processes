@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}{{ conference.title }}{% endblock %}
+
+{% set role_names = {'organizer': 'Организатор', 'speaker': 'Докладчик', 'participant': 'Участник'} %}
+{% set role_badges = {'organizer': 'text-bg-warning', 'speaker': 'text-bg-info', 'participant': 'text-bg-secondary'} %}
+
+{% block content %}
+<a class="btn btn-link px-0 mb-2" href="{{ url_for('main_page') }}">← Назад к списку</a>
+
+<div class="card shadow-sm">
+  <div class="card-body p-4">
+    <div class="row g-4 align-items-start">
+      <div class="col-auto">
+        <div class="text-center bg-primary-subtle text-primary rounded p-3" style="min-width:110px;">
+          <div class="fs-2 fw-bold lh-1">{{ conference.start_date.strftime('%d.%m') }}</div>
+          <div class="small">{{ conference.start_date.strftime('%Y') }}</div>
+        </div>
+      </div>
+
+      <div class="col">
+        <h1 class="h3 mb-1">{{ conference.title }}</h1>
+        <p class="text-muted mb-3">{{ conference.topic }}</p>
+
+        {% if conference.description %}
+          <p>{{ conference.description }}</p>
+        {% endif %}
+
+        <dl class="row mb-4">
+          <dt class="col-sm-3 text-muted fw-normal">Даты</dt>
+          <dd class="col-sm-9">
+            {{ conference.start_date.strftime('%d.%m.%Y') }} – {{ conference.end_date.strftime('%d.%m.%Y') }}
+          </dd>
+
+          <dt class="col-sm-3 text-muted fw-normal">Место</dt>
+          <dd class="col-sm-9">{{ conference.location }}</dd>
+
+          <dt class="col-sm-3 text-muted fw-normal">Оргвзнос</dt>
+          <dd class="col-sm-9">{{ conference.fee }} ₽</dd>
+
+          <dt class="col-sm-3 text-muted fw-normal">Организатор</dt>
+          <dd class="col-sm-9">
+            {{ conference.creator.surname }} {{ conference.creator.name }}
+          </dd>
+        </dl>
+
+        <div class="d-flex flex-wrap gap-2">
+          {% if participation and participation.role == 'organizer' %}
+            <span class="badge text-bg-warning fs-6">Вы — организатор конференции</span>
+          {% elif participation %}
+            <span class="badge {{ role_badges.get(participation.role, 'text-bg-secondary') }} fs-6">
+              Вы записаны: {{ role_names.get(participation.role, participation.role) }}
+            </span>
+            {% if participation.report_topic %}
+              <span class="badge text-bg-light fs-6">Тема доклада: {{ participation.report_topic }}</span>
+            {% endif %}
+          {% else %}
+            <a class="btn btn-primary"
+               href="{{ url_for('conference_join', id_conference=conference.id) }}">
+              Записаться
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

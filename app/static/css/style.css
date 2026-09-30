@@ -1,0 +1,31 @@
+/* Шрифты с fallback */
+body {
+  font-family: "PT Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5, .navbar-brand {
+  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+}
+
+/* Мягкий hover на карточках */
+.card {
+  transition: box-shadow .15s ease-in-out;
+}
+.card:hover {
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1) !important;
+}
+
+/* details-summary без стандартного маркера */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary::after {
+  content: "▾";
+  float: right;
+  color: var(--bs-secondary-color);
+}
+details[open] > summary::after {
+  content: "▴";
+}
