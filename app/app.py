@@ -260,7 +260,7 @@ def health():
     """Проверка, что приложение живо и БД отвечает. Пригодится для Docker и CI."""
     try:
         db.session.execute(text("SELECT 1"))
-        return {"status": "ok", "database": "ok"}
+        return {"status": "ok", "database": "ok", "version": os.environ.get("APP_VERSION", "local")}
     except Exception as e:
         return {"status": "error", "database": str(e)}, 500
 
