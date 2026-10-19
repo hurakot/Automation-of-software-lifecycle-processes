@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ${APP_IMAGE}:${APP_TAG:-dev}        # вместо build: — готовый образ из Docker Hub
+    image: ${APP_IMAGE}:${APP_TAG:-dev-hurakot}        # вместо build: — готовый образ из Docker Hub
     container_name: conf_web
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
