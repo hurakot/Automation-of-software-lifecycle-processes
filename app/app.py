@@ -264,9 +264,7 @@ def health():
     except Exception as e:
         return {"status": "error", "database": str(e)}, 500
 
-
- 
- 
 if __name__ == "__main__":
     # Порт 5001, потому что на macOS порт 5000 занят AirPlay Receiver
-    app.run(debug=True, port=5001)
+    # Отладчик включается только явно: FLASK_DEBUG=1 python app.py
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", port=5001)
