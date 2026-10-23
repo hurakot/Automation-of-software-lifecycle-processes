@@ -63,7 +63,7 @@ class Conference(db.Model):
     topic = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True)
     location = db.Column(db.Text, nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.Date, nullable=False, index=True)
     end_date = db.Column(db.Date, nullable=False)
     fee = db.Column(db.Integer, nullable=False) # Оргвзнос
     format = db.Column(db.Text, nullable=False, server_default="offline") # offline — очно, online — онлайн, hybrid — смешанный
