@@ -36,6 +36,15 @@ def test_login_with_correct_password(client, helpers):
     assert "Вы успешно зашли на сайт" in page.get_data(as_text=True)
 
 
+def test_create_conference_saves_format(client, helpers, flask_app):
+    helpers.register(client)
+    helpers.log_in(client)
+    page = helpers.create_conference(client, title="Online Conf", format="online")
+    assert "Онлайн" in page.get_data(as_text=True)
+    with flask_app.app_context():
+        assert Conference.query.filter_by(title="Online Conf").one().format == "online"
+
+
 def test_login_with_wrong_password(client, helpers):
     helpers.register(client)
     page = helpers.log_in(client, password=WRONG_PASSWORD)
