@@ -214,6 +214,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: ix_conferences_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ix_conferences_start_date ON public.conferences USING btree (start_date);
+
+
+--
 -- Name: conferences conferences_created_by_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -242,4 +249,4 @@ ALTER TABLE ONLY public.participations
 --
 
 
--- alembic_version: b3f1c2d4e5a6
+-- alembic_version: c7d8e9f0a1b2
