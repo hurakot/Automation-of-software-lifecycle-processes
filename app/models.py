@@ -63,9 +63,10 @@ class Conference(db.Model):
     topic = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=True)
     location = db.Column(db.Text, nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.Date, nullable=False, index=True)
     end_date = db.Column(db.Date, nullable=False)
     fee = db.Column(db.Integer, nullable=False) # Оргвзнос
+    format = db.Column(db.Text, nullable=False, server_default="offline") # offline — очно, online — онлайн, hybrid — смешанный
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.Date, server_default=db.func.now())
     creator = db.relationship("User", back_populates="created_conferences")

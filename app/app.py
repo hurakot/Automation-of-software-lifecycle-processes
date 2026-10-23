@@ -159,6 +159,9 @@ def conference_new():
         start_date = request.form.get('start_date')
         end_date = request.form.get('end_date')
         fee = request.form.get('fee')
+        conf_format = request.form.get('format', 'offline')
+        if conf_format not in ('offline', 'online', 'hybrid'):
+            conf_format = 'offline'
 
         userdata = Conference.query.filter_by(title=title).first()
         if not userdata:
@@ -171,6 +174,7 @@ def conference_new():
                     start_date = start_date,
                     end_date = end_date,
                     fee = fee,
+		    format = conf_format,
                     created_by = current_user.id,
                     created_at = now,
                     creator = current_user

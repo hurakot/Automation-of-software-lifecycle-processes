@@ -33,6 +33,9 @@
 
           <dt class="col-sm-3 text-muted fw-normal">Место</dt>
           <dd class="col-sm-9">{{ conference.location }}</dd>
+	  
+	  <dt class="col-sm-3 text-muted fw-normal">Формат</dt>
+          <dd class="col-sm-9">{{ {'offline': 'Очно', 'online': 'Онлайн', 'hybrid': 'Смешанный'}.get(conference.format, conference.format) }}</dd>
 
           <dt class="col-sm-3 text-muted fw-normal">Оргвзнос</dt>
           <dd class="col-sm-9">{{ conference.fee }} ₽</dd>
