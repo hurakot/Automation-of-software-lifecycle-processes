@@ -1,0 +1,18 @@
+# Squawk: проверка безопасности SQL-миграций PostgreSQL (ЛР8)
+pg_version = "18.0"
+# SQL от Alembic (flask db upgrade --sql) сам содержит BEGIN/COMMIT,
+# поэтому Squawk не должен считать, что файл уже обёрнут в транзакцию
+assume_in_transaction = false
+# Отключены правила о стиле и производительности — они не про безопасность.
+# Остаются правила о потере данных и долгих блокировках: ban-drop-table,
+# ban-drop-column, adding-required-field, renaming-column, changing-column-type,
+# require-concurrent-index-creation, ban-truncate-cascade и другие.
+excluded_rules = [
+  "prefer-text-field",
+  "prefer-bigint-over-int",
+  "prefer-bigint-over-smallint",
+  "prefer-identity",
+  "require-lock-timeout",
+  "require-statement-timeout",
+  "prefer-robust-stmts",
+]
