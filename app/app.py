@@ -159,6 +159,9 @@ def conference_new():
         start_date = request.form.get('start_date')
         end_date = request.form.get('end_date')
         fee = request.form.get('fee')
+        conf_format = request.form.get('format', 'offline')
+        if conf_format not in ('offline', 'online', 'hybrid'):
+            conf_format = 'offline'
 
         userdata = Conference.query.filter_by(title=title).first()
         if not userdata:
@@ -171,6 +174,7 @@ def conference_new():
                     start_date = start_date,
                     end_date = end_date,
                     fee = fee,
+		    format = conf_format,
                     created_by = current_user.id,
                     created_at = now,
                     creator = current_user
@@ -260,13 +264,11 @@ def health():
     """Проверка, что приложение живо и БД отвечает. Пригодится для Docker и CI."""
     try:
         db.session.execute(text("SELECT 1"))
-        return {"status": "ok", "database": "ok"}
+        return {"status": "ok", "database": "ok", "version": os.environ.get("APP_VERSION", "local")}
     except Exception as e:
         return {"status": "error", "database": str(e)}, 500
 
-
- 
- 
 if __name__ == "__main__":
     # Порт 5001, потому что на macOS порт 5000 занят AirPlay Receiver
-    app.run(debug=True, port=5001)
+    # Отладчик включается только явно: FLASK_DEBUG=1 python app.py
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1", port=5001)

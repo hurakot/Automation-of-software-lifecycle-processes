@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:18
+    container_name: conf_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql   # данные БД на STAGE переживают перезапуски
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    image: ${APP_IMAGE}:${APP_TAG:-dev-hurakot}        # вместо build: — готовый образ из Docker Hub
+    container_name: conf_web
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+    ports:
+      - "8000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped

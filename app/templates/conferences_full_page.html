@@ -33,13 +33,22 @@
 
           <dt class="col-sm-3 text-muted fw-normal">Место</dt>
           <dd class="col-sm-9">{{ conference.location }}</dd>
+	  
+	  <dt class="col-sm-3 text-muted fw-normal">Формат</dt>
+          <dd class="col-sm-9">{{ {'offline': 'Очно', 'online': 'Онлайн', 'hybrid': 'Смешанный'}.get(conference.format, conference.format) }}</dd>
 
           <dt class="col-sm-3 text-muted fw-normal">Оргвзнос</dt>
           <dd class="col-sm-9">{{ conference.fee }} ₽</dd>
 
+          
           <dt class="col-sm-3 text-muted fw-normal">Организатор</dt>
           <dd class="col-sm-9">
             {{ conference.creator.surname }} {{ conference.creator.name }}
+          </dd>
+
+          <dt class="col-sm-3 text-muted fw-normal">Записалось</dt>
+          <dd class="col-sm-9">
+            {{ conference.participations | rejectattr('role', 'equalto', 'organizer') | list | length }}
           </dd>
         </dl>
 
